@@ -1,4 +1,4 @@
-# vue-app
+# books-vue
 
 ## Project setup
 ```
