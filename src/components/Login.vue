@@ -4,7 +4,7 @@
             <div class="col">
                 <h1 class="mt-5">Login</h1>
                 <hr>
-                <form-tag @myevent="submitHandler">
+                <form-tag @myevent="submitHandler" name="myform" event="myevent">
                     <text-input v-model="email" label="Email" name="email" required="true" type="email">
                     </text-input>
                     <text-input v-model="password" label="Password" name="password" required="true"
