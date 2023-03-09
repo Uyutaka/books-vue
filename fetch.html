@@ -21,7 +21,7 @@
                     <h1 class="mt-5">Books: {{books.results.length}}</h1>
                     <ul>
                         <book-item v-for="item in books.results" v-bind:book="item" v-bind:key="item.id"
-                            v-bind:id="item.id">
+                            v-bind:id="item.id" @removeBook="removeBook">
                         </book-item>
                     </ul>
                 </div>
@@ -39,7 +39,7 @@
                         {{book.authors[0].name}}
                     </div>
                     <span>
-                        <a href="#!">
+                        <a href="#!" @click="$emit('removebook', book.id)">
                             <i class="bi bi-trash"></i>
                         </a>
                     </span>
@@ -57,6 +57,14 @@
             },
             components: {
                 'book-item': BookItem,
+            },
+            methods: {
+                removeBook(id) {
+                    console.log("Removing", id);
+                    this.books.results = this.books.results.filter(function (item) {
+                        return item.id != id;
+                    })
+                }
             },
             mounted() {
                 console.log("mounted");
