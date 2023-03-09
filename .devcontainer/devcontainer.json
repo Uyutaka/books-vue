@@ -8,7 +8,6 @@
 		"leodevbro.blockman",
 		"streetsidesoftware.code-spell-checker",
 		// vue
-		"octref.vetur",
 		"Vue.volar",
 	]
 }
