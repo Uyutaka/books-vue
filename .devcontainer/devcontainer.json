@@ -1,0 +1,14 @@
+{
+	"name": "Vue Env",
+	"dockerFile": "Dockerfile",
+	// Extension for VSCode
+	"extensions": [
+		// common
+		"WakaTime.vscode-wakatime",
+		"leodevbro.blockman",
+		"streetsidesoftware.code-spell-checker",
+		// vue
+		"octref.vetur",
+		"Vue.volar",
+	]
+}
