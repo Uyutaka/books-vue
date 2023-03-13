@@ -10,6 +10,8 @@
                     <text-input v-model="password" label="Password" name="password" required="true"
                         type="password"></text-input>
                     <hr>
+                    Email: {{ email }}
+                    <hr>
                     <input type="submit" class="btn btn-primary" value="Login">
 
                 </form-tag>
@@ -49,7 +51,6 @@ export default {
             fetch("http://localhost:8081/users/login", requestOptions)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data)
                     if (data.error) {
                         console.log("Error:", data.message);
                     } else {
