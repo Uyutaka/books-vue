@@ -80,7 +80,7 @@ export default {
 
                         // set the cookie
                         document.cookie = "_site_data="
-                            + JSON.stringify(reponse.data)
+                            + JSON.stringify(response.data)
                             + "; "
                             + expires
                             + "; path=/; SameSite=strict; Secure;"
