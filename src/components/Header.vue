@@ -16,7 +16,7 @@
                     <li class="nav-item">
                         <router-link class="nav-link active" to="/books">Books</router-link>
                     </li>
-                    <li v-id="store.token !== ''" class="nav-item dropdown">
+                    <li v-if="store.token !== ''" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navBarDropDown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Admin
@@ -29,13 +29,14 @@
                                 <router-link class="dropdown-item" to="/admin/users/0">Add User</router-link>
                             </li>
                             <li>
-                                <router-link class="dropdown-item" to="/admin/books"> Manage Books</router-link>
+                                <router-link class="dropdown-item" to="/admin/books">Manage Books</router-link>
                             </li>
                             <li>
-                                <router-link class="dropdown-item" :to="{ name: 'BookEdit', params: { bookId: 0 } }"> Add
+                                <router-link class="dropdown-item" :to="{ name: 'BookEdit', params: { bookId: 0 } }">Add
                                     Book</router-link>
                             </li>
                         </ul>
+
                     </li>
 
                     <li class="nav-item">
@@ -55,6 +56,8 @@
 <script>
 import { store } from './store.js'
 import router from './../router/index.js'
+import Security from './security.js'
+
 export default {
     data() {
         return {
@@ -66,11 +69,8 @@ export default {
             const payload = {
                 token: store.token,
             }
-            const requestOptions = {
-                method: "POST",
-                body: JSON.stringify(payload),
-            }
-            fetch(process.env.VUE_APP_API_URL + "/users/logout", requestOptions)
+
+            fetch(process.env.VUE_APP_API_URL + "/users/logout", Security.requestOptions(payload))
                 .then((response) => response.json())
                 .then((response) => {
                     if (response.error) {
