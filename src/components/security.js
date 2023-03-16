@@ -4,7 +4,7 @@ import router from './../router/index.js'
 let Security = {
     // make sure user is authenticated
     requireToken: function () {
-        if (store.token === - '') {
+        if (store.token === '') {
             router.push("/login");
             return false
         }
