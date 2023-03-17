@@ -35,7 +35,7 @@
 <script>
 import FormTag from './forms/FormTag.vue';
 import TextInput from './forms/TextInput.vue';
-import { notie } from 'notie';
+import notie from 'notie';
 import Security from './security';
 import { store } from './store';
 
@@ -45,7 +45,20 @@ export default {
 
         if (parseInt(String(this.$route.params.userId), 10) > 0) {
             // editing an existing user
-            // TODO - get user from database
+            fetch(process.env.VUE_APP_API_URL + "/admin/users/get/" + this.$route.params.userId, Security.SecurityOptions(""))
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.error) {
+                        notie.alert({
+                            type: 'error',
+                            text: data.message,
+                        })
+                    } else {
+                        this.user = data;
+                        // we want password to be empty for existing users
+                        this.user.password = "";
+                    }
+                })
         }
     },
     data() {
