@@ -14,7 +14,7 @@
                     <text-input v-if="this.user.id === 0" v-model="user.password" type="password" required="true"
                         label="Password" :value="user.password" name="password"></text-input>
                     <text-input v-else v-model="user.password" type="password" label="Password" :value="user.password"
-                        name="password"></text-input>
+                        name="password" help="Leave empty to keep existing password"></text-input>
                     <hr>
 
                     <div class="float-start">
@@ -45,7 +45,7 @@ export default {
 
         if (parseInt(String(this.$route.params.userId), 10) > 0) {
             // editing an existing user
-            fetch(process.env.VUE_APP_API_URL + "/admin/users/get/" + this.$route.params.userId, Security.SecurityOptions(""))
+            fetch(process.env.VUE_APP_API_URL + "/admin/users/get/" + this.$route.params.userId, Security.requestOptions(""))
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.error) {
