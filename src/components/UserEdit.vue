@@ -124,7 +124,7 @@ export default {
                                 this.$emit('error', data.message);
                             } else {
                                 this.$emit('success', "User deleted");
-                                router.push("/admin/users")
+                                router.push("/admin/users");
                             }
                         })
                 }
