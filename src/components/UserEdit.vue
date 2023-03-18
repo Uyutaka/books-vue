@@ -5,18 +5,23 @@
                 <h1 class="mt-3">User</h1>
                 <hr>
                 <form-tag @userEditEvent="submitHandler" name="userform" event="userEditEvent">
+
                     <text-input v-model="user.first_name" type="text" required="true" label="First Name"
                         :value="user.first_name" name="first-name"></text-input>
+
                     <text-input v-model="user.last_name" type="text" required="true" label="Last Name"
                         :value="user.last_name" name="last-name"></text-input>
-                    <text-input v-model="user.email" type="text" required="true" label="Email" :value="user.email"
+
+                    <text-input v-model="user.email" type="email" required="true" label="Email" :value="user.email"
                         name="email"></text-input>
+
                     <text-input v-if="this.user.id === 0" v-model="user.password" type="password" required="true"
                         label="Password" :value="user.password" name="password"></text-input>
-                    <text-input v-else v-model="user.password" type="password" label="Password" :value="user.password"
-                        name="password" help="Leave empty to keep existing password"></text-input>
-                    <hr>
 
+                    <text-input v-else v-model="user.password" type="password" label="Password"
+                        help="Leave empty to keep existing password" :value="user.password" name="password"></text-input>
+
+                    <hr>
                     <div class="float-start">
                         <input type="submit" class="btn btn-primary me-2" value="Save">
                         <router-link to="/admin/users" class="btn btn-outline-secondary">Cancel</router-link>
@@ -26,6 +31,8 @@
                             class="btn btn-danger" href="javascript:void(0);"
                             @click="confirmDelete(this.user.id)">Delete</a>
                     </div>
+                    <div class="clearfix"></div>
+
                 </form-tag>
             </div>
         </div>
@@ -33,11 +40,12 @@
 </template>
 
 <script>
-import FormTag from './forms/FormTag.vue';
-import TextInput from './forms/TextInput.vue';
-import notie from 'notie';
-import Security from './security';
-import { store } from './store';
+import Security from './security.js'
+import FormTag from './forms/FormTag.vue'
+import TextInput from './forms/TextInput.vue'
+import notie from 'notie'
+import { store } from './store'
+import router from './../router/index.js'
 
 export default {
     beforeMount() {
@@ -49,10 +57,7 @@ export default {
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.error) {
-                        notie.alert({
-                            type: 'error',
-                            text: data.message,
-                        })
+                        this.$emit('error', data.message);
                     } else {
                         this.user = data;
                         // we want password to be empty for existing users
@@ -86,55 +91,45 @@ export default {
                 email: this.user.email,
                 password: this.user.password,
             }
+
             fetch(`${process.env.VUE_APP_API_URL}/admin/users/save`, Security.requestOptions(payload))
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.error) {
-                        notie.alert({
-                            type: 'error',
-                            text: data.statusMessage,
-                        })
+                        this.$emit('error', data.message);
                     } else {
-                        notie.alert({
-                            type: 'success',
-                            text: 'Changes saved!',
-                        })
+                        this.$emit('success', "Changes saved!");
+                        router.push("/admin/users");
                     }
                 })
                 .catch((error) => {
-                    notie.alert({
-                        type: 'error',
-                        text: error,
-                    })
+                    this.$emit('error', error);
                 })
         },
         confirmDelete(id) {
             notie.confirm({
-                text: "Are you sure want to delete this user?",
+                text: "Are you sure you want to delete this user?",
                 submitText: "Delete",
                 submitCallback: function () {
                     console.log("will delete", id)
+
                     let payload = {
                         id: id,
                     }
-                    fetch(`${process.env.VUE_APP_API_URL}/admin/users/delete`, Security.requestOptions(payload))
+
+                    fetch(process.env.VUE_APP_API_URL + "/admin/users/delete", Security.requestOptions(payload))
                         .then((response) => response.json())
                         .then((data) => {
                             if (data.error) {
-                                notie.alert({
-                                    type: 'error',
-                                    text: data.message,
-                                })
+                                this.$emit('error', data.message);
                             } else {
-                                notie.alert({
-                                    type: 'success',
-                                    text: "User deleted",
-                                })
+                                this.$emit('success', "User deleted");
+                                router.push("/admin/users")
                             }
                         })
                 }
             })
-        },
+        }
     }
 }
 </script>

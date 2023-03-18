@@ -9,8 +9,8 @@
 <script>
 import Header from "./components/Header.vue"
 import Footer from "./components/Footer.vue"
-import { store } from "./components/store.js"
-import { notie } from "notie"
+import { store } from './components/store.js'
+import notie from 'notie'
 
 const getCookie = (name) => {
   return document.cookie.split("; ").reduce((r, v) => {
@@ -27,14 +27,16 @@ export default {
   },
   data() {
     return {
-      store,
+      store
     }
   },
   beforeMount() {
     // check for a cookie
     let data = getCookie("_site_data");
+
     if (data !== "") {
       let cookieData = JSON.parse(data);
+
       // update store
       store.token = cookieData.token.token;
       store.user = {
