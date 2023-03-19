@@ -29,7 +29,9 @@
                         </td>
 
                         <td v-if="u.token.id > 0">
+
                             <span class="badge bg-success" @click="logUserOut(u.id)">Logged in</span>
+                            <!-- <span class="badge bg-success" @click="logUserOut(u.id)">Logged in</span> -->
                         </td>
                         <td v-else>
                             <span class="badge bg-danger">Not logged in</span>
@@ -44,9 +46,9 @@
 </template>
 
 <script>
-import { notie } from 'notie';
-import Security from './security';
-import { store } from './store';
+import Security from './security'
+import { store } from './store'
+import notie from 'notie'
 
 export default {
     data() {
@@ -74,13 +76,24 @@ export default {
     },
     methods: {
         logUserOut(id) {
+            console.log(notie);
             if (id !== store.user.id) {
                 notie.confirm({
                     text: "Are you sure you want to log this user out?",
-                    SubmitText: "Log out",
-                    submitCallback: (() => {
+                    submitText: "Log Out",
+                    submitCallback: () => {
                         console.log("Would log out user id", id);
-                    })
+                        fetch(process.env.VUE_APP_API_URL + "/admin/log-user-out/" + id, Security.requestOptions(""))
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data.error) {
+                                    this.$emit('error', data.message);
+                                } else {
+                                    this.$emit('success', data.message);
+                                    this.$emit('forceUpdate');
+                                }
+                            })
+                    }
                 })
             } else {
                 this.$emit('error', "You can't log yourself out!");
