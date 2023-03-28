@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHistory } from 'vue-router'
 import Body from './../components/Body.vue'
 import Login from './../components/Login.vue'
 import Books from './../components/Books.vue'
@@ -47,14 +47,21 @@ const routes = [
     },
     {
         path: '/admin/users/:userId',
-        name: 'UserEdit',
+        name: 'User',
         component: User,
     },
 ]
 
-const router = createRouter({ history: createWebHistory(), routes })
+const router = createRouter({
+    history: createWebHistory(),
+    routes
+})
+
+// this function will run every time a user navigates to any part of the site,
+// and call checkToken(). If the user has a token in store.token, then we validate 
+// that token.
 router.beforeEach(() => {
     Security.checkToken();
-
 })
+
 export default router
