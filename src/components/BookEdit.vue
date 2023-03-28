@@ -78,6 +78,25 @@ export default {
     name: "BookEdit",
     beforeMount() {
         Security.requireToken();
+
+        // get book for edit if id > 0 
+        if (this.$route.params.bookId > 0) {
+            // editing a book
+        } else {
+            // adding a book
+
+        }
+
+        // get list of authors for drop down
+        fetch(process.env.VUE_APP_API_URL + "/admin/authors/all", Security.requestOptions(""))
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error) {
+                    this.$emit('error', data.message);
+                } else {
+                    this.authors = data.data;
+                }
+            })
     },
     components: {
         'form-tag': FormTag,
